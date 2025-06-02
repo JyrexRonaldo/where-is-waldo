@@ -16,7 +16,7 @@ If you are developing a production application, we recommend using TypeScript wi
 <img src="waldoBackground-D-bS9zki.jpg" usemap="#image-map">
 
 <map name="image-map">
-    <area target="" alt="" title="" href="" coords="338,755,306,660" shape="rect">
-    <area target="" alt="" title="" href="" coords="791,646,852,744" shape="rect">
-    <area target="" alt="" title="" href="" coords="1817,693,1891,799" shape="rect">
+    <area alt="odlaw" coords="338,755,306,660" shape="rect">
+    <area alt="wizard" coords="791,646,852,744" shape="rect">
+    <area alt="waldo" coords="1817,693,1891,799" shape="rect">
 </map>
