@@ -2,56 +2,46 @@ import waldoImg from '/waldo.png'
 import odlawImg from '/odlaw.gif'
 import wizardImg from '/wizard.gif'
 import beach from '/beach3.webp'
+import CharacterDropdown from '../CharacterDropdown/CharacterDropdown'
+import { useState } from 'react'
 
 function App() {
-    const areaClickHandler = (e) => {
-        console.log('Yeah')
-        console.log(e.target.coords)
+    const [xOffset, setXOffset] = useState(null)
+    const [yOffset, setYOffset] = useState(null)
+    const [show, setShow] = useState(false)
+
+    const beachClickHandler = (e) => {
+        // console.log('Yeah')
+        setShow(!show)
+        setXOffset(e.nativeEvent.offsetX)
+        setYOffset(e.nativeEvent.offsetY)
     }
+    // console.log(typeof xOffset)
+    console.log({ xOffset, yOffset })
 
     return (
         <div className="flex min-h-screen bg-gray-700">
             <div className="flex w-40 flex-col justify-center gap-8 bg-gray-800 px-4 py-4">
                 <p className="text-white">Timer: </p>
-                <button className='flex flex-col items-center'>
+                <div className="flex flex-col items-center">
                     <img src={waldoImg} alt="" />
-                    <p className='text-white' >Waldo</p>
-                </button>
-                <button className='flex flex-col items-center'>        
+                    <p className="text-white">Waldo</p>
+                </div>
+                <div className="flex flex-col items-center">
                     <img src={wizardImg} alt="" />
-                    <p className='text-white' >Wizard</p>
-                </button>
-                <button className='flex flex-col items-center'>
+                    <p className="text-white">Wizard</p>
+                </div>
+                <div className="flex flex-col items-center">
                     <img src={odlawImg} alt="" />
-                    <p className='text-white' >Odlaw</p>
-                </button>
+                    <p className="text-white">Odlaw</p>
+                </div>
             </div>
-            <div className="flex max-w-10/12 items-center">
-                <map name="beach-map">
-                    <area className='cursor-default'
-                        onClick={areaClickHandler}
-                        alt="odlaw"
-                        coords="273,417,312,504"
-                        shape="rect"
-                        href="#odlaw"
-                    ></area>
-                    <area className='cursor-default'
-                        onClick={areaClickHandler}
-                        alt="waldo"
-                        coords="613,416,656,495"
-                        shape="rect"
-                        href="#waldo"
-                    ></area>
-                    <area className='cursor-default'
-                        onClick={areaClickHandler}
-                        alt="wizard"
-                        coords="727,416,772,491"
-                        shape="rect"
-                        href="#wizard"
-                    ></area>
-                </map>
-
-                <img src={beach} useMap="#beach-map" alt="beach-picture" />
+            <div
+                style={{ backgroundImage: `url(${beach})` }}
+                onClick={beachClickHandler}
+                className="relative grow bg-amber-900"
+            >
+                {show && <CharacterDropdown x={xOffset} y={yOffset} />}
             </div>
         </div>
     )
