@@ -1,9 +1,26 @@
 const prisma = require("../config/prisma");
 
-
-function testMiddleware(req, res) {
-  console.log(req.user, "this works");
-  res.end();
+function checkCoordinate(x, y) {
+  console.log({ x, y });
+  if (x > 608 && x < 661 && y > 415 && y < 490) {
+    return "Waldo";
+  } else if (x > 275 && x < 306 && y > 415 && y < 501) {
+    return "Odlaw";
+  } else if (x > 725 && x < 794 && y > 413 && y < 489) {
+    return "Wizard";
+  } else {
+    return "No character found"
+  }
 }
 
-module.exports = {  };
+function validateCoordinate(req, res) {
+  // console.log(req.body);
+  const { xCoordinate, yCoordinate } = req.body;
+  console.log({ xCoordinate, yCoordinate });
+  const character = checkCoordinate(xCoordinate, yCoordinate);
+  console.log(character);
+  // res.stat(character)
+  return res.status(200).json(character);
+}
+
+module.exports = { validateCoordinate };

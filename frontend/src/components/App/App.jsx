@@ -11,13 +11,17 @@ function App() {
     const [show, setShow] = useState(false)
 
     const beachClickHandler = (e) => {
-        // console.log('Yeah')
+        // console.log(e.target.classList.contains('beach'))
         setShow(!show)
-        setXOffset(e.nativeEvent.offsetX)
-        setYOffset(e.nativeEvent.offsetY)
+        if (e.target.classList.contains('beach')) {
+            setXOffset(e.nativeEvent.offsetX)
+            setYOffset(e.nativeEvent.offsetY)
+        }
     }
     // console.log(typeof xOffset)
     console.log({ xOffset, yOffset })
+
+    console.log(import.meta.env.VITE_BACKEND_DOMAIN)
 
     return (
         <div className="flex min-h-screen bg-gray-700">
@@ -39,7 +43,7 @@ function App() {
             <div
                 style={{ backgroundImage: `url(${beach})` }}
                 onClick={beachClickHandler}
-                className="relative grow bg-amber-900"
+                className="beach relative grow bg-amber-900"
             >
                 {show && <CharacterDropdown x={xOffset} y={yOffset} />}
             </div>

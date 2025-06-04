@@ -6,7 +6,7 @@ const gameController = require("../controllers/gameController");
 //   .route()
 //   .post();
 
-// gameRouter.route("/log-in").post(authController.handleLogIn);
+gameRouter.route("/validate").post(gameController.validateCoordinate);
 
 // gameRouter
 //   .route("/test-auth")

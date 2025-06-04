@@ -1,37 +1,52 @@
 function CharacterDropdown({ x, y }) {
-    function checkCoordinate(x, y) {
-        console.log({ x, y })
-        if (x > 608 && x < 661 && y > 415 && y < 490) {
-            console.log('Waldo')
-            return 'Waldo'
-        } else if (x > 275 && x < 306 && y > 415 && y < 501) {
-            console.log('Odlaw')
-            return 'Odlaw'
-        } else if (x > 725 && x < 794 && y > 413 && y < 489) {
-            console.log('Wizard')
-            return 'Wizard'
+    
+
+    const validateCoordinate = async (character) => {
+        try {
+            const response = await fetch(
+                `${import.meta.env.VITE_BACKEND_DOMAIN}/validate/`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        xCoordinate: x,
+                        yCoordinate: y,
+                    }),
+                }
+            )
+
+            const data = await response.json()
+            console.log(data)
+            if (data === character) {
+                console.log(true)
+            }
+        } catch (error) {
+            console.log(error)
         }
     }
+    
 
     return (
         <div
             style={{ top: y, left: x }}
-            className={`absolute flex flex-col gap-5 bg-black px-3 py-2.5`}
+            className={`absolute flex flex-col gap-5 rounded-md bg-black px-3 py-5`}
         >
             <button
-                onClick={checkCoordinate}
+                onClick={() => {validateCoordinate("Waldo")}}
                 className="rounded-md bg-gray-500 px-2.5 py-1 text-white hover:bg-gray-600"
             >
                 Waldo
             </button>
             <button
-                onClick={checkCoordinate}
+                onClick={() => {validateCoordinate("Wizard")}}
                 className="rounded-md bg-gray-500 px-2.5 py-1 text-white hover:bg-gray-600"
             >
                 Wizard
             </button>
             <button
-                onClick={checkCoordinate}
+                onClick={() => {validateCoordinate("Odlaw")}}
                 className="rounded-md bg-gray-500 px-2.5 py-1 text-white hover:bg-gray-600"
             >
                 Odlaw
