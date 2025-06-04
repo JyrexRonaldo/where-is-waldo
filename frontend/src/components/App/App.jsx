@@ -9,6 +9,11 @@ function App() {
     const [xOffset, setXOffset] = useState(null)
     const [yOffset, setYOffset] = useState(null)
     const [show, setShow] = useState(false)
+    const [characterArray, setCharacterArray] = useState([
+        'waldo',
+        'wizard',
+        'odlaw',
+    ])
 
     const beachClickHandler = (e) => {
         // console.log(e.target.classList.contains('beach'))
@@ -19,9 +24,9 @@ function App() {
         }
     }
     // console.log(typeof xOffset)
-    console.log({ xOffset, yOffset })
+    // console.log({ xOffset, yOffset })
 
-    console.log(import.meta.env.VITE_BACKEND_DOMAIN)
+    // console.log(import.meta.env.VITE_BACKEND_DOMAIN)
 
     return (
         <div className="flex min-h-screen bg-gray-700">
@@ -45,7 +50,14 @@ function App() {
                 onClick={beachClickHandler}
                 className="beach relative grow bg-amber-900"
             >
-                {show && <CharacterDropdown x={xOffset} y={yOffset} />}
+                {show && (
+                    <CharacterDropdown
+                        x={xOffset}
+                        y={yOffset}
+                        characterArray={characterArray}
+                        setCharacterArray={setCharacterArray}
+                    />
+                )}
             </div>
         </div>
     )

@@ -3,11 +3,11 @@ const prisma = require("../config/prisma");
 function checkCoordinate(x, y) {
   console.log({ x, y });
   if (x > 608 && x < 661 && y > 415 && y < 490) {
-    return "Waldo";
+    return "waldo";
   } else if (x > 275 && x < 306 && y > 415 && y < 501) {
-    return "Odlaw";
+    return "odlaw";
   } else if (x > 725 && x < 794 && y > 413 && y < 489) {
-    return "Wizard";
+    return "wizard";
   } else {
     return "No character found"
   }

@@ -1,7 +1,9 @@
-function CharacterDropdown({ x, y }) {
-    
+import CharacterButton from '../CharacterButton/CharacterButton'
 
-    const validateCoordinate = async (character) => {
+function CharacterDropdown({ x, y, characterArray, setCharacterArray }) {
+    // console.log(characterArray)
+
+    const validateCoordinate = async (characterName) => {
         try {
             const response = await fetch(
                 `${import.meta.env.VITE_BACKEND_DOMAIN}/validate/`,
@@ -19,38 +21,36 @@ function CharacterDropdown({ x, y }) {
 
             const data = await response.json()
             console.log(data)
-            if (data === character) {
-                console.log(true)
+            if (data === characterName) {
+                console.log('yay')
+                console.log({ characterName })
+                const newArray = characterArray.filter(
+                    (name) => !(name === characterName)
+                )
+                console.log(newArray)
+                setCharacterArray([...newArray])
+            } else {
+                console.log('Nay!')
             }
         } catch (error) {
             console.log(error)
         }
     }
-    
+
+    const dropdownButtons = characterArray.map((name) => (
+        <CharacterButton
+            key={name}
+            characterName={name}
+            clickHandler={validateCoordinate}
+        />
+    ))
 
     return (
         <div
             style={{ top: y, left: x }}
-            className={`absolute flex flex-col gap-5 rounded-md bg-black px-3 py-5`}
+            className="absolute flex flex-col gap-5 rounded-md bg-black px-3 py-5"
         >
-            <button
-                onClick={() => {validateCoordinate("Waldo")}}
-                className="rounded-md bg-gray-500 px-2.5 py-1 text-white hover:bg-gray-600"
-            >
-                Waldo
-            </button>
-            <button
-                onClick={() => {validateCoordinate("Wizard")}}
-                className="rounded-md bg-gray-500 px-2.5 py-1 text-white hover:bg-gray-600"
-            >
-                Wizard
-            </button>
-            <button
-                onClick={() => {validateCoordinate("Odlaw")}}
-                className="rounded-md bg-gray-500 px-2.5 py-1 text-white hover:bg-gray-600"
-            >
-                Odlaw
-            </button>
+            {dropdownButtons}
         </div>
     )
 }
