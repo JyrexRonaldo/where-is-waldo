@@ -4,16 +4,20 @@ import wizardImg from '/wizard.gif'
 import beach from '/beach3.webp'
 import CharacterDropdown from '../CharacterDropdown/CharacterDropdown'
 import { useState } from 'react'
+import {  useNavigate } from 'react-router-dom'
 
 function App() {
     const [xOffset, setXOffset] = useState(null)
     const [yOffset, setYOffset] = useState(null)
     const [show, setShow] = useState(false)
+    const [showDialog, setShowDialog] = useState(false)
+    const [name, setName] = useState('')
     const [characterArray, setCharacterArray] = useState([
         'waldo',
         'wizard',
         'odlaw',
     ])
+    const navigate = useNavigate()
 
     const beachClickHandler = (e) => {
         // console.log(e.target.classList.contains('beach'))
@@ -23,10 +27,41 @@ function App() {
             setYOffset(e.nativeEvent.offsetY)
         }
     }
+
+    const submitScoreHandler = async () => {
+        console.log(name)
+        // try {
+        //     const response = await fetch(
+        //         `${import.meta.env.VITE_BACKEND_DOMAIN}/best/`,
+        //         {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //             },
+        //             body: JSON.stringify({
+        //                 name: name,
+        //             }),
+        //         }
+        //     )
+        //     const data = await response.json()
+        //     console.log(data)
+        // } catch (error) {
+        //     console.log(error)
+        // }
+        navigate("/best")
+    }
     // console.log(typeof xOffset)
     // console.log({ xOffset, yOffset })
 
     // console.log(import.meta.env.VITE_BACKEND_DOMAIN)
+
+    console.log(Array.isArray(characterArray))
+
+    if (characterArray.length === 0) {
+        setShow(false)
+        setShowDialog(true)
+        setCharacterArray(['yeah'])
+    }
 
     return (
         <div className="flex min-h-screen bg-gray-700">
@@ -34,15 +69,27 @@ function App() {
                 <p className="text-white">Timer: </p>
                 <div className="flex flex-col items-center">
                     <img src={waldoImg} alt="" />
-                    <p className="text-white">Waldo</p>
+                    {characterArray.includes('waldo') ? (
+                        <p className="text-white">Waldo</p>
+                    ) : (
+                        <p className="text-green-700">Waldo</p>
+                    )}
                 </div>
                 <div className="flex flex-col items-center">
                     <img src={wizardImg} alt="" />
-                    <p className="text-white">Wizard</p>
+                    {characterArray.includes('wizard') ? (
+                        <p className="text-white">Wizard</p>
+                    ) : (
+                        <p className="text-green-700">Wizard</p>
+                    )}
                 </div>
                 <div className="flex flex-col items-center">
                     <img src={odlawImg} alt="" />
-                    <p className="text-white">Odlaw</p>
+                    {characterArray.includes('odlaw') ? (
+                        <p className="text-white">Odlaw</p>
+                    ) : (
+                        <p className="text-green-700">Odlaw</p>
+                    )}
                 </div>
             </div>
             <div
@@ -59,6 +106,35 @@ function App() {
                     />
                 )}
             </div>
+            {showDialog && (
+                <dialog
+                    className="mx-auto self-center bg-black px-8 py-8.5 text-white"
+                    open
+                >
+                    <form method="dialog" className="flex flex-col">
+                        <p className="mb-2">Game finished in 40 seconds!</p>
+                        <div className="mb-4.5 flex flex-col">
+                            <label htmlFor="username">Name:</label>
+                            <input
+                                type="text"
+                                id="username"
+                                className="rounded-md border-1 px-1.5"
+                                value={name}
+                                onChange={(e) => {
+                                    setName(e.target.value)
+                                }}
+                            />
+                        </div>
+                        <button
+                            onClick={submitScoreHandler}
+                            className="rounded-md border-1 px-1.5"
+                            type="button"
+                        >
+                            Submit score
+                        </button>
+                    </form>
+                </dialog>
+            )}
         </div>
     )
 }
