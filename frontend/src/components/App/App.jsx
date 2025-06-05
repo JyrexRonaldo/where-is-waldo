@@ -46,7 +46,7 @@ function App() {
         }
         postTime()
         return () => {
-            controller.abort();
+            controller.abort()
         }
     }, [exit])
 
@@ -61,25 +61,25 @@ function App() {
 
     const submitScoreHandler = async () => {
         console.log(name)
-        // try {
-        //     const response = await fetch(
-        //         `${import.meta.env.VITE_BACKEND_DOMAIN}/best/`,
-        //         {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //             },
-        //             body: JSON.stringify({
-        //                 name: name,
-        //             }),
-        //         }
-        //     )
-        //     const data = await response.json()
-        //     console.log(data)
-        // } catch (error) {
-        //     console.log(error)
-        // }
         navigate('/best')
+        try {
+            const response = await fetch(
+                `${import.meta.env.VITE_BACKEND_DOMAIN}/best/`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                    }),
+                }
+            )
+            const data = await response.json()
+            console.log(data)
+        } catch (error) {
+            console.log(error)
+        }
     }
     // console.log(typeof xOffset)
     // console.log({ xOffset, yOffset })
@@ -148,7 +148,7 @@ function App() {
                             <input
                                 type="text"
                                 id="username"
-                                className="rounded-md border-1 px-1.5"
+                                className="rounded-md border-1 px-1.5 active:bg-black"
                                 value={name}
                                 onChange={(e) => {
                                     setName(e.target.value)
