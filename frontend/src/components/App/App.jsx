@@ -18,40 +18,48 @@ function App() {
         'odlaw',
     ])
     const [exit, setExit] = useState(null)
+    const [counter, setCounter] = useState(0)
+    const [stopCounter, setStopCounter] = useState(1)
     const navigate = useNavigate()
 
     useEffect(() => {
-        const controller = new AbortController()
-        const signal = controller.signal
-        async function postTime() {
-            try {
-                const response = await fetch(
-                    `${import.meta.env.VITE_BACKEND_DOMAIN}/best/`,
-                    {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            time: new Date(),
-                        }),
-                        signal,
-                    }
-                )
-                const data = await response.json()
-                console.log(data)
-            } catch (error) {
-                console.log(error)
+        // const controller = new AbortController()
+        // const signal = controller.signal
+        const key = setInterval(() => {
+            if (stopCounter) {
+                setCounter((count) => count + 1)
             }
-        }
-        postTime()
+        }, 1000)
+
+        // async function postTime() {
+        //     try {
+        //         const response = await fetch(
+        //             `${import.meta.env.VITE_BACKEND_DOMAIN}/best/`,
+        //             {
+        //                 method: 'POST',
+        //                 headers: {
+        //                     'Content-Type': 'application/json',
+        //                 },
+        //                 body: JSON.stringify({
+        //                     time: new Date(),
+        //                 }),
+        //                 signal,
+        //             }
+        //         )
+        //         const data = await response.json()
+        //         console.log(data)
+        //     } catch (error) {
+        //         console.log(error)
+        //     }
+        // }
+        // postTime()
         return () => {
-            controller.abort()
+            // controller.abort()
+            clearInterval(key)
         }
-    }, [exit])
+    }, [exit, stopCounter])
 
     const beachClickHandler = (e) => {
-        // console.log(e.target.classList.contains('beach'))
         setShow(!show)
         if (e.target.classList.contains('beach')) {
             setXOffset(e.nativeEvent.offsetX)
@@ -60,7 +68,6 @@ function App() {
     }
 
     const submitScoreHandler = async () => {
-        console.log(name)
         navigate('/best')
         try {
             const response = await fetch(
@@ -72,6 +79,7 @@ function App() {
                     },
                     body: JSON.stringify({
                         name: name,
+                        time: counter,
                     }),
                 }
             )
@@ -81,22 +89,19 @@ function App() {
             console.log(error)
         }
     }
-    // console.log(typeof xOffset)
-    // console.log({ xOffset, yOffset })
-
-    // console.log(import.meta.env.VITE_BACKEND_DOMAIN)
 
     if (characterArray.length === 0) {
         setShow(false)
         setShowDialog(true)
         setCharacterArray(['yeah'])
         setExit(1)
+        setStopCounter(0)
     }
 
     return (
         <div className="flex min-h-screen bg-gray-700">
             <div className="flex w-40 flex-col justify-center gap-8 bg-gray-800 px-4 py-4">
-                <p className="text-white">Timer: </p>
+                {<p className="text-white">Timer: {counter} </p>}
                 <div className="flex flex-col items-center">
                     <img src={waldoImg} alt="" />
                     {characterArray.includes('waldo') ? (
@@ -142,7 +147,7 @@ function App() {
                     open
                 >
                     <form method="dialog" className="flex flex-col">
-                        <p className="mb-2">Game finished in 40 seconds!</p>
+                        <p className="mb-2">Game finished in {counter} seconds!</p>
                         <div className="mb-4.5 flex flex-col">
                             <label htmlFor="username">Name:</label>
                             <input
