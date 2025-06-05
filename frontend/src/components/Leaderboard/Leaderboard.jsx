@@ -1,11 +1,40 @@
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 function Leaderboard() {
     const navigate = useNavigate()
+    const [scores, setScores] = useState([])
 
     function playAgain() {
         navigate('/')
     }
+
+    useEffect(() => {
+        const controller = new AbortController()
+        const signal = controller.signal
+        async function getScores() {
+            try {
+                const response = await fetch(
+                    `${import.meta.env.VITE_BACKEND_DOMAIN}/best/`,
+                    {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        signal,
+                    }
+                )
+                const data = await response.json()
+                setScores(data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        getScores()
+        return () => {
+            controller.abort()
+        }
+    }, [scores.length])
 
     return (
         <div className="flex min-h-screen flex-col items-center gap-2 bg-neutral-500">
@@ -25,14 +54,15 @@ function Leaderboard() {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td className="text-center">jah</td>
-                        <td className="text-center">bah</td>
-                    </tr>
-                    <tr>
-                        <td className="text-center">dag</td>
-                        <td className="text-center">xas</td>
-                    </tr>
+                    {scores &&
+                        scores.map((score) => (
+                            <tr key={score.id}>
+                                <td className="text-center">{score.name}</td>
+                                <td className="text-center">
+                                    {score.time} seconds
+                                </td>
+                            </tr>
+                        ))}
                 </tbody>
             </table>
         </div>

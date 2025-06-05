@@ -34,8 +34,8 @@ async function getTimes(req, res) {
       (new Date(timesArray[1]) - new Date(timesArray[0])) / 1000
     );
 
-    // console.log("seconds pass", secondsPassed);
-    // console.log("start", timesArray);
+    console.log("seconds pass", secondsPassed);
+    console.log("start", timesArray);
     timesArray = [];
     console.log("end", timesArray);
   }
@@ -46,26 +46,14 @@ async function getTimes(req, res) {
         name,
       },
     });
-    // console.log({ name, secondsPassed });
+    console.log({ name, secondsPassed });
   }
 }
 
-async function createPost(req, res) {
-  const { title, body, authorId, status } = req.body;
-  await prisma.post.create({
-    data: {
-      title,
-      body,
-      authorId: +authorId,
-      status: Boolean(status),
-    },
-  });
-  res.json(req.body);
-}
-
 async function getScores(req, res) {
-  
-
+  const allScores = await prisma.leaderboard.findMany();
+  console.log("line 68", allScores);
+  res.status(200).json(allScores)
 }
 
 module.exports = { validateCoordinate, getTimes, getScores };

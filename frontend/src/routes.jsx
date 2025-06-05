@@ -2,9 +2,6 @@ import App from './components/App/App'
 import ErrorPage from './components/ErrorPage/ErrorPage'
 import Leaderboard from './components/Leaderboard/Leaderboard'
 
-
-
-
 const routes = [
     {
         path: '/',
