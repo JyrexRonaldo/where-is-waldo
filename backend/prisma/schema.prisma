@@ -15,6 +15,6 @@ datasource db {
 
 model leaderboard {
   id       Int       @id @default(autoincrement())
-  username String    
-  time String
+  name String    
+  time DateTime 
 }

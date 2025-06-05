@@ -3,8 +3,8 @@ import odlawImg from '/odlaw.gif'
 import wizardImg from '/wizard.gif'
 import beach from '/beach3.webp'
 import CharacterDropdown from '../CharacterDropdown/CharacterDropdown'
-import { useState } from 'react'
-import {  useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function App() {
     const [xOffset, setXOffset] = useState(null)
@@ -17,7 +17,38 @@ function App() {
         'wizard',
         'odlaw',
     ])
+    const [exit, setExit] = useState(null)
     const navigate = useNavigate()
+
+    useEffect(() => {
+        const controller = new AbortController()
+        const signal = controller.signal
+        async function postTime() {
+            try {
+                const response = await fetch(
+                    `${import.meta.env.VITE_BACKEND_DOMAIN}/best/`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            time: new Date(),
+                        }),
+                        signal,
+                    }
+                )
+                const data = await response.json()
+                console.log(data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        postTime()
+        return () => {
+            controller.abort();
+        }
+    }, [exit])
 
     const beachClickHandler = (e) => {
         // console.log(e.target.classList.contains('beach'))
@@ -48,19 +79,18 @@ function App() {
         // } catch (error) {
         //     console.log(error)
         // }
-        navigate("/best")
+        navigate('/best')
     }
     // console.log(typeof xOffset)
     // console.log({ xOffset, yOffset })
 
     // console.log(import.meta.env.VITE_BACKEND_DOMAIN)
 
-    console.log(Array.isArray(characterArray))
-
     if (characterArray.length === 0) {
         setShow(false)
         setShowDialog(true)
         setCharacterArray(['yeah'])
+        setExit(1)
     }
 
     return (

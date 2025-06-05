@@ -20,18 +20,16 @@ function CharacterDropdown({ x, y, characterArray, setCharacterArray }) {
             )
 
             const data = await response.json()
-            console.log(data)
+            // console.log(data)
             if (data === characterName) {
-                console.log('yay')
-                console.log({ characterName })
+                // console.log('yay')
+                // console.log({ characterName })
                 const newArray = characterArray.filter(
                     (name) => !(name === characterName)
                 )
-                console.log(newArray)
+                // console.log(newArray)
                 setCharacterArray([...newArray])
-            } else {
-                console.log('Nay!')
-            }
+            } 
         } catch (error) {
             console.log(error)
         }

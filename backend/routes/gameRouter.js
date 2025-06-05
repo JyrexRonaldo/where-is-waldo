@@ -7,6 +7,8 @@ const gameController = require("../controllers/gameController");
 //   .post();
 
 gameRouter.route("/validate").post(gameController.validateCoordinate);
+gameRouter.route("/best").post(gameController.getTimes);
+
 
 // gameRouter
 //   .route("/test-auth")
