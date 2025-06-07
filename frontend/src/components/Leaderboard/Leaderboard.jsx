@@ -31,9 +31,6 @@ function Leaderboard() {
             }
         }
         getScores()
-        return () => {
-            controller.abort()
-        }
     }, [scores.length])
 
     return (

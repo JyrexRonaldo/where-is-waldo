@@ -42,7 +42,13 @@ async function getTimes(req, res) {
 }
 
 async function getScores(req, res) {
-  const allScores = await prisma.leaderboard.findMany();
+  const allScores = await prisma.leaderboard.findMany({
+    orderBy: [
+      {
+        time: "asc",
+      },
+    ],
+  });
   res.status(200).json(allScores);
 }
 
