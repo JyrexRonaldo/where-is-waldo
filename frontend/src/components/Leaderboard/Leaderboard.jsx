@@ -10,8 +10,6 @@ function Leaderboard() {
     }
 
     useEffect(() => {
-        const controller = new AbortController()
-        const signal = controller.signal
         async function getScores() {
             try {
                 const response = await fetch(
@@ -21,7 +19,6 @@ function Leaderboard() {
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        signal,
                     }
                 )
                 const data = await response.json()
@@ -37,13 +34,13 @@ function Leaderboard() {
         <div className="flex min-h-screen flex-col items-center gap-2 bg-neutral-500">
             <button
                 onClick={playAgain}
-                className="mt-16 rounded-md bg-black px-3 py-2 text-white"
+                className="mt-10 rounded-md bg-black px-3 py-2 text-white"
             >
                 Play Again
             </button>
 
             <p className="text-3xl">Best Scores</p>
-            <table className="min-w-2xs">
+            <table className="mb-10 min-w-2xs">
                 <thead>
                     <tr className=" ">
                         <th className="text-center text-2xl">Name:</th>

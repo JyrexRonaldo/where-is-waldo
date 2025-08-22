@@ -31,7 +31,6 @@ function App() {
         }, 1000)
 
         return () => {
-            // controller.abort()
             clearInterval(key)
         }
     }, [exit, stopCounter])
@@ -142,6 +141,7 @@ function App() {
                                 value={name}
                                 onChange={(e) => {
                                     setName(e.target.value)
+                                    setErrorMessage("")
                                 }}
                             />
                         </div>
