@@ -20,39 +20,16 @@ function App() {
     const [exit, setExit] = useState(null)
     const [counter, setCounter] = useState(0)
     const [stopCounter, setStopCounter] = useState(1)
+    const [errorMessage, setErrorMessage] = useState(null)
     const navigate = useNavigate()
 
     useEffect(() => {
-        // const controller = new AbortController()
-        // const signal = controller.signal
         const key = setInterval(() => {
             if (stopCounter) {
                 setCounter((count) => count + 1)
             }
         }, 1000)
 
-        // async function postTime() {
-        //     try {
-        //         const response = await fetch(
-        //             `${import.meta.env.VITE_BACKEND_DOMAIN}/best/`,
-        //             {
-        //                 method: 'POST',
-        //                 headers: {
-        //                     'Content-Type': 'application/json',
-        //                 },
-        //                 body: JSON.stringify({
-        //                     time: new Date(),
-        //                 }),
-        //                 signal,
-        //             }
-        //         )
-        //         const data = await response.json()
-        //         console.log(data)
-        //     } catch (error) {
-        //         console.log(error)
-        //     }
-        // }
-        // postTime()
         return () => {
             // controller.abort()
             clearInterval(key)
@@ -68,6 +45,10 @@ function App() {
     }
 
     const submitScoreHandler = async () => {
+        if (name === '') {
+            setErrorMessage('Please enter your name')
+            return
+        }
         navigate('/best')
         try {
             const response = await fetch(
@@ -127,27 +108,31 @@ function App() {
                     )}
                 </div>
             </div>
-            <div
-                style={{ backgroundImage: `url(${beach})` }}
-                onClick={beachClickHandler}
-                className="beach relative grow bg-amber-900"
-            >
-                {show && (
-                    <CharacterDropdown
-                        x={xOffset}
-                        y={yOffset}
-                        characterArray={characterArray}
-                        setCharacterArray={setCharacterArray}
-                    />
-                )}
+            <div className="flex grow items-center justify-center bg-amber-900">
+                <div
+                    style={{ backgroundImage: `url(${beach})` }}
+                    onClick={beachClickHandler}
+                    className="beach relative h-[700px] w-[1200px] bg-red-700"
+                >
+                    {show && (
+                        <CharacterDropdown
+                            x={xOffset}
+                            y={yOffset}
+                            characterArray={characterArray}
+                            setCharacterArray={setCharacterArray}
+                        />
+                    )}
+                </div>
             </div>
             {showDialog && (
                 <dialog
                     className="mx-auto self-center bg-black px-8 py-8.5 text-white"
                     open
                 >
-                    <form method="dialog" className="flex flex-col">
-                        <p className="mb-2">Game finished in {counter} seconds!</p>
+                    <form method="dialog" className="flex flex-col gap-2">
+                        <p className="mb-2">
+                            Game finished in {counter} seconds!
+                        </p>
                         <div className="mb-4.5 flex flex-col">
                             <label htmlFor="username">Name:</label>
                             <input
@@ -167,6 +152,9 @@ function App() {
                         >
                             Submit score
                         </button>
+                        <p className="self-center text-sm text-red-400">
+                            {errorMessage}
+                        </p>
                     </form>
                 </dialog>
             )}
